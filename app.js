@@ -2,12 +2,12 @@ require("dotenv").config()
 const express = require("express")
 const cors = require("cors")
 
-const sequelize = require("./models")
-const applyAssociations = require("./models/associations")
+const sequelize = require("./model")
+const applyAssociations = require("./model/associations")
 
-require("./models/Category")
-require("./models/Article")
-require("./models/File")
+require("./model/Category")
+require("./model/Article")
+require("./model/File")
 
 applyAssociations()
 
@@ -30,9 +30,9 @@ app.get("/", (req, res) => {
 
 /**
  * ROUTES */
-const categoryRouter = require("./routes/category")
-const articleRouter = require("./routes/article")
-const fileRouter = require("./routes/file")
+const categoryRouter = require("./route/category")
+const articleRouter = require("./route/article")
+const fileRouter = require("./route/file")
 
 app.use("/api/category", categoryRouter)
 app.use("/api/article", articleRouter)
@@ -48,20 +48,20 @@ app.use((err, req, res, next) => {
 })
 
 /** START SERVER */
-const PORT = process.env.PORT || 4000
+const PORT = process.env.PORT || 4000;
 
-  (async () => {
-    try {
-      await sequelize.authenticate()
-      console.log("✅ Database connected")
+(async () => {
+  try {
+    await sequelize.authenticate()
+    console.log("✅ Database connected")
 
-      await sequelize.sync()
-      console.log("✅ Models synced")
+    await sequelize.sync()
+    console.log("✅ Models synced")
 
-      app.listen(PORT, () => {
-        console.log(`🚀 Server running on port ${PORT}`)
-      })
-    } catch (err) {
-      console.error("❌ Startup error:", err)
-    }
-  })()
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`)
+    })
+  } catch (err) {
+    console.error("❌ Startup error:", err)
+  }
+})()

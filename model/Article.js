@@ -16,7 +16,7 @@ const Article = sequelize.define("Article", {
 
   heroImageId: { type: DataTypes.INTEGER.UNSIGNED, allowNull: true, defaultValue: null },
 
-  categoryId: { type: DataTypes.INTEGER.UNSIGNED, allowNull: false },
+  categoryId: { type: DataTypes.INTEGER.UNSIGNED, allowNull: true, defaultValue: null },
 
   status: { type: DataTypes.ENUM("draft", "published"), defaultValue: "draft" },
 

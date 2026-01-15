@@ -2,6 +2,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("./index");
 
+
 const Article = sequelize.define("Article", {
   id: { type: DataTypes.INTEGER.UNSIGNED, autoIncrement: true, primaryKey: true },
 
@@ -15,11 +16,22 @@ const Article = sequelize.define("Article", {
 
   heroImageId: { type: DataTypes.INTEGER.UNSIGNED, allowNull: true, defaultValue: null },
 
-  category: { type: DataTypes.STRING, allowNull: false },
+  categoryId: { type: DataTypes.INTEGER.UNSIGNED, allowNull: false },
 
   status: { type: DataTypes.ENUM("draft", "published"), defaultValue: "draft" },
 
   content: { type: DataTypes.JSON, allowNull: false, defaultValue: { sections: [] } },
-}, { tableName: "articles", timestamps: true, paranoid: true });
+}, {
+  tableName: "articles", timestamps: true, paranoid: true, validate: {
+    slugUnique: (next) => {
+      Article.findOne({ where: { slug: this.slug } }).then((article) => {
+        if (article) {
+          return next(new Error("Article slug already exists"));
+        }
+        next();
+      });
+    },
+  }
+});
 
 module.exports = Article;

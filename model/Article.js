@@ -1,6 +1,6 @@
 // models/Article.js
-const { DataTypes } = require("sequelize");
-const sequelize = require("./index");
+const { DataTypes } = require("sequelize")
+const sequelize = require("./index")
 
 
 const Article = sequelize.define("Article", {
@@ -26,12 +26,12 @@ const Article = sequelize.define("Article", {
     slugUnique: (next) => {
       Article.findOne({ where: { slug: this.slug } }).then((article) => {
         if (article) {
-          return next(new Error("Article slug already exists"));
+          return next(new Error("Article slug already exists"))
         }
-        next();
-      });
+        next()
+      })
     },
   }
-});
+})
 
-module.exports = Article;
+module.exports = Article

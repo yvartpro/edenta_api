@@ -18,8 +18,29 @@ const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
 router.get("/", (req, res) => {
-  File.findAll()
-    .then(files => res.json(files))
+  const { page = 1, limit = 15, search = "" } = req.query;
+  const offset = (page - 1) * limit;
+  const { Op } = db.Sequelize;
+
+  const where = search ? {
+    [Op.or]: [
+      { alt: { [Op.like]: `%${search}%` } },
+      { url: { [Op.like]: `%${search}%` } }
+    ]
+  } : {};
+
+  File.findAndCountAll({
+    where,
+    limit: parseInt(limit),
+    offset: parseInt(offset),
+    order: [['createdAt', 'DESC']]
+  })
+    .then(result => res.json({
+      data: result.rows,
+      total: result.count,
+      page: parseInt(page),
+      totalPages: Math.ceil(result.count / limit)
+    }))
     .catch(err => res.status(500).json({ error: err.message }))
 })
 

@@ -1,7 +1,35 @@
 import { DataTypes } from "sequelize"
 
 
+
 export default (sequelize) => {
+  const extractFileIds = (data, ids = new Set()) => {
+    if (!data) return ids;
+    if (Array.isArray(data)) {
+      data.forEach(item => extractFileIds(item, ids));
+    } else if (typeof data === 'object') {
+      for (const key in data) {
+        if (/^(file|image)(_)?id$/i.test(key) && data[key]) {
+          ids.add(data[key]);
+        }
+        extractFileIds(data[key], ids);
+      }
+    }
+    return ids;
+  };
+
+  const syncContentFiles = async (article) => {
+    try {
+      const ids = extractFileIds(article.content);
+      if (article.heroImageId) ids.add(article.heroImageId);
+
+      // Convert Set to Array and sync
+      await article.setContentFiles(Array.from(ids));
+    } catch (error) {
+      console.error("Error syncing article files:", error);
+    }
+  };
+
   const Article = sequelize.define("Article",
     {
       id: { type: DataTypes.INTEGER.UNSIGNED, autoIncrement: true, primaryKey: true },
@@ -24,14 +52,18 @@ export default (sequelize) => {
     },
     {
       tableName: "articles", timestamps: true, paranoid: true, validate: {
-        slugUnique: (next) => {
+        slugUnique(next) {
           Article.findOne({ where: { slug: this.slug } }).then((article) => {
-            if (article) {
+            if (article && article.id !== this.id) { // Also exclude current article on update!
               return next(new Error("Article slug already exists"))
             }
             next()
           })
         },
+      },
+      hooks: {
+        afterCreate: syncContentFiles,
+        afterUpdate: syncContentFiles
       }
     }
   )

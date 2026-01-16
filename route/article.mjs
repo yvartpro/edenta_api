@@ -8,7 +8,11 @@ const Category = db.Category
 
 router.get("/", (req, res) => {
   Article.findAll({
-    include: [File, Category]
+    include: [
+      { model: File, as: 'heroImage', attributes: ["id", "url", "type", "alt"] },
+      { model: Category, as: "category", attributes: ["id", "name"] },
+      { model: File, as: 'contentFiles', attributes: ["id", "url", "type", "alt"], through: { attributes: [] } }
+    ]
   })
     .then(articles => res.json(articles))
     .catch(err => res.status(500).json({ error: err.message }))
@@ -16,7 +20,11 @@ router.get("/", (req, res) => {
 
 router.get("/:id", (req, res) => {
   Article.findByPk(req.params.id, {
-    include: [File, Category]
+    include: [
+      { model: File, as: 'heroImage', attributes: ["id", "url", "type", "alt"] },
+      { model: Category, as: "category", attributes: ["id", "name"] },
+      { model: File, as: 'contentFiles', attributes: ["id", "url", "type", "alt"], through: { attributes: [] } }
+    ]
   })
     .then(article => res.json(article))
     .catch(err => res.status(500).json({ error: err.message }))
@@ -30,7 +38,11 @@ router.post("/", (req, res) => {
 
 router.put("/:id", (req, res) => {
   Article.findByPk(req.params.id, {
-    include: [File, Category]
+    include: [
+      { model: File, as: 'heroImage', attributes: ["id", "url", "type", "alt"] },
+      { model: Category, as: "category", attributes: ["id", "name"] },
+      { model: File, as: 'contentFiles', attributes: ["id", "url", "type", "alt"], through: { attributes: [] } }
+    ]
   })
     .then(article => {
       article.update(req.body)

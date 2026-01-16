@@ -1,4 +1,4 @@
-const sequelize = require("./model")
+import sequelize from "./model"
 
 require("./model/Category")
 require("./model/Article")

@@ -1,6 +1,6 @@
-const express = require("express")
+import express from "express"
 const router = express.Router()
-const db = require("../model")
+import db from "../model"
 
 const User = db.User
 
@@ -41,5 +41,4 @@ router.delete("/:id", (req, res) => {
     })
     .catch(err => res.status(500).json({ error: err.message }))
 })
-
-module.exports = router
+export default router

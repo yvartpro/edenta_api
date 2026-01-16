@@ -1,7 +1,6 @@
-// models/User.js
-const { DataTypes } = require("sequelize")
-const sequelize = require("./index")
-const bcrypt = require("bcrypt")
+import { DataTypes } from "sequelize"
+import { sequelize } from "./index"
+import bcrypt from "bcrypt"
 
 const User = sequelize.define(
   "User",
@@ -40,4 +39,4 @@ const User = sequelize.define(
   }
 )
 
-module.exports = User
+export default User

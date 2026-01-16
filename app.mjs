@@ -16,14 +16,14 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 /** HEALTH CHECK */
-app.get("/", (req, res) => {
+app.get("/edenta/api/", (req, res) => {
   res.send("Welcome to EDENTA Application")
 })
 
 /** ROUTES */
-app.use("/api/category", categoryRouter)
-app.use("/api/article", articleRouter)
-app.use("/api/file", fileRouter)
+app.use("/edenta/api/category", categoryRouter)
+app.use("/edenta/api/article", articleRouter)
+app.use("/edenta/api/file", fileRouter)
 
 /** ERROR HANDLER */
 app.use((err, req, res, next) => {
@@ -33,11 +33,12 @@ app.use((err, req, res, next) => {
 
 /** START SERVER */
 const PORT = process.env.PORT
+const APP_URL = process.env.APP_URL
 
 try {
   await sequelize.authenticate()
   app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
+    console.log(`Server running on port ${PORT} at ${APP_URL}`)
   })
 } catch (err) {
   console.error("❌ DB connection failed:", err)

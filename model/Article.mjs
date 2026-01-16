@@ -33,21 +33,14 @@ export default (sequelize) => {
   const Article = sequelize.define("Article",
     {
       id: { type: DataTypes.INTEGER.UNSIGNED, autoIncrement: true, primaryKey: true },
-
       title: { type: DataTypes.STRING, allowNull: false },
-
       subtitle: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
-
       slug: { type: DataTypes.STRING, allowNull: false, unique: true },
-
+      view_count: { type: DataTypes.INTEGER.UNSIGNED, allowNull: false, defaultValue: 0 },
       summary: { type: DataTypes.TEXT, allowNull: true, defaultValue: null },
-
       heroImageId: { type: DataTypes.INTEGER.UNSIGNED, allowNull: true, defaultValue: null },
-
       categoryId: { type: DataTypes.INTEGER.UNSIGNED, allowNull: true, defaultValue: null },
-
       status: { type: DataTypes.ENUM("draft", "published"), defaultValue: "draft" },
-
       content: { type: DataTypes.JSON, allowNull: false, defaultValue: { sections: [] } },
     },
     {

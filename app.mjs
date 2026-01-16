@@ -14,6 +14,7 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use("/edenta/api/uploads", express.static("uploads"))
 
 /** HEALTH CHECK */
 app.get("/edenta/api/", (req, res) => {

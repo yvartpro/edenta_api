@@ -34,7 +34,7 @@ router.post("/", upload.single('file'), async (req, res) => {
     if (req.file) {
       const filename = "edenta" + "_" + Math.round(Math.random() * 1E6) + ".webp";
       const outputPath = path.join(uploadDir, filename);
-      const baseUrl = process.env.BASE_URL || "http://localhost:4000/api";
+      const baseUrl = process.env.BASE_URL || "http://localhost:4000/edenta/api";
 
       await sharp(req.file.buffer)
         .resize(1080, 1080, { fit: 'inside', withoutEnlargement: true })

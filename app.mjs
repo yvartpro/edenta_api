@@ -1,6 +1,11 @@
 import "dotenv/config"
 import cors from "cors"
 import express from "express"
+import path from "path"
+import { fileURLToPath } from "url"
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 import articleRouter from "./route/article.mjs"
 import categoryRouter from "./route/category.mjs"
@@ -16,17 +21,18 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use("/edenta/api/uploads", express.static("uploads"))
-
-/** HEALTH CHECK */
-app.get("/edenta/api/", (req, res) => {
-  res.send("Welcome to EDENTA Application")
-})
+app.use("/edenta/api", express.static('public'))
 
 /** ROUTES */
 app.use("/edenta/api/category", categoryRouter)
 app.use("/edenta/api/article", articleRouter)
 app.use("/edenta/api/file", fileRouter)
 app.use("/edenta/api/stats", statsRouter)
+
+// Catch-all for SPA
+app.get("/edenta/api/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"))
+})
 
 /** ERROR HANDLER */
 app.use((err, req, res, next) => {

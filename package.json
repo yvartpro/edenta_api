@@ -2,11 +2,11 @@
   "name": "edenta",
   "version": "1.0.0",
   "description": "Edenta API",
-  "main": "app.js",
+  "main": "app.mjs",
   "type": "module",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
+    "start": "node app.mjs",
+    "dev": "nodemon app.mjs",
     "sync": "node sync.mjs"
   },
   "keywords": [

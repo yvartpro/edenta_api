@@ -51,7 +51,7 @@ export default (sequelize) => {
       content: { type: DataTypes.JSON, allowNull: false, defaultValue: { sections: [] } },
     },
     {
-      tableName: "articles", timestamps: true, paranoid: true, validate: {
+      tableName: "edenta_articles", timestamps: true, paranoid: true, validate: {
         slugUnique(next) {
           Article.findOne({ where: { slug: this.slug } }).then((article) => {
             if (article && article.id !== this.id) {

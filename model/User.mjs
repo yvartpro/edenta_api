@@ -11,7 +11,7 @@ const User = sequelize.define(
     role: { type: DataTypes.ENUM("user", "admin"), defaultValue: "user", allowNull: false, validate: { isIn: { args: [["user", "admin"]], msg: "Invalid role" } } },
   },
   {
-    tableName: "users",
+    tableName: "edenta_users",
     timestamps: true,
     paranoid: true,
     validate: {

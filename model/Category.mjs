@@ -11,7 +11,7 @@ export default (sequelize) => {
       slug: { type: DataTypes.STRING, allowNull: false, unique: true },
     },
     {
-      tableName: "categories",
+      tableName: "edenta_categories",
       timestamps: true,
       paranoid: true,
       hooks: {

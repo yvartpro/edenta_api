@@ -6,7 +6,7 @@ export default (sequelize) => {
     articleId: { type: DataTypes.INTEGER.UNSIGNED, allowNull: false, references: { model: "articles", key: "id" } },
     fileId: { type: DataTypes.INTEGER.UNSIGNED, allowNull: false, references: { model: "files", key: "id" } },
   }, {
-    tableName: "article_files",
+    tableName: "edenta_article_files",
     timestamps: false,
     paranoid: true,
   })

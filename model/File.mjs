@@ -10,8 +10,7 @@ export default (sequelize) => {
       optimized: { type: DataTypes.BOOLEAN, defaultValue: false },
       alt: { type: DataTypes.STRING },
     },
-    { tableName: "files", timestamps: true, paranoid: true },
-    { tableName: "files", timestamps: true, paranoid: true }
+    { tableName: "edenta_files", timestamps: true, paranoid: true }
   )
   return File
 }

@@ -54,7 +54,7 @@ export default (sequelize) => {
       tableName: "articles", timestamps: true, paranoid: true, validate: {
         slugUnique(next) {
           Article.findOne({ where: { slug: this.slug } }).then((article) => {
-            if (article && article.id !== this.id) { // Also exclude current article on update!
+            if (article && article.id !== this.id) {
               return next(new Error("Article slug already exists"))
             }
             next()

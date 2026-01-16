@@ -4,7 +4,7 @@
   "description": "Edenta API",
   "main": "app.mjs",
   "scripts": {
-    "start": "node app.mjs",
+    "server": "node app.mjs",
     "dev": "nodemon app.mjs",
     "sync": "node sync.mjs"
   },

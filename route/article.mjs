@@ -51,6 +51,22 @@ router.get("/:id", (req, res) => {
     .catch(err => res.status(500).json({ error: err.message }))
 })
 
+router.get("/slug/:slug", (req, res) => {
+  Article.findOne({
+    where: { slug: req.params.slug },
+    include: [
+      { model: File, as: 'heroImage', attributes: ["id", "url", "type", "alt"] },
+      { model: Category, as: "category", attributes: ["id", "name"] },
+      { model: File, as: 'contentFiles', attributes: ["id", "url", "type", "alt"], through: { attributes: [] } }
+    ]
+  })
+    .then(article => {
+      if (!article) return res.status(404).json({ message: "Article not found" });
+      res.json(article);
+    })
+    .catch(err => res.status(500).json({ error: err.message }))
+})
+
 router.post("/", (req, res) => {
   Article.create(req.body)
     .then(article => res.json(article))

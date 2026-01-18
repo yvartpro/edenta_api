@@ -4,6 +4,7 @@ import CategoryModel from "./Category.mjs";
 import ArticleModel from "./Article.mjs";
 import FileModel from "./File.mjs";
 import ArticleFileModel from "./ArticleFile.mjs";
+import UserModel from "./User.mjs";
 import applyAssociations from "./associations.mjs";
 
 const sequelize = new Sequelize(
@@ -22,10 +23,11 @@ const Category = CategoryModel(sequelize);
 const Article = ArticleModel(sequelize);
 const File = FileModel(sequelize);
 const ArticleFile = ArticleFileModel(sequelize);
+const User = UserModel(sequelize);
 
 // Apply associations
 applyAssociations({ Category, Article, File, ArticleFile });
 
-const db = { sequelize, Sequelize, Category, Article, File, ArticleFile };
-export { sequelize, Sequelize, Category, Article, File, ArticleFile };
+const db = { sequelize, Sequelize, Category, Article, File, ArticleFile, User };
+export { sequelize, Sequelize, Category, Article, File, ArticleFile, User };
 export default db;

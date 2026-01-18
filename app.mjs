@@ -11,6 +11,7 @@ import articleRouter from "./route/article.mjs"
 import categoryRouter from "./route/category.mjs"
 import fileRouter from "./route/file.mjs"
 import statsRouter from "./route/stats.mjs"
+import userRouter from "./route/user.mjs"
 
 import { sequelize } from "./model/index.mjs"
 
@@ -28,6 +29,7 @@ app.use("/edenta/api/category", categoryRouter)
 app.use("/edenta/api/article", articleRouter)
 app.use("/edenta/api/file", fileRouter)
 app.use("/edenta/api/stats", statsRouter)
+app.use("/edenta/api/user", userRouter)
 
 // Catch-all for SPA
 app.get("/edenta/api/*", (req, res) => {

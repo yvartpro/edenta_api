@@ -22,7 +22,7 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use("/edenta/api/uploads", express.static("uploads"))
-app.use("/edenta/api", express.static('public'))
+app.use("/edenta/api/dashboard", express.static('public'))
 
 /** ROUTES */
 app.use("/edenta/api/category", categoryRouter)
@@ -32,7 +32,7 @@ app.use("/edenta/api/stats", statsRouter)
 app.use("/edenta/api/user", userRouter)
 
 // Catch-all for SPA
-app.get("/edenta/api/*", (req, res) => {
+app.get("/edenta/api/dashboard/*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"))
 })
 

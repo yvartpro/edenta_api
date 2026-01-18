@@ -1,10 +1,11 @@
 import express from "express"
 const router = express.Router()
 import db from "../model/index.mjs"
+import isAuth from "../middleware/auth.mjs"
 
 const Category = db.Category
 
-router.get("/", (req, res) => {
+router.get("/", isAuth, (req, res) => {
   const { page = 1, limit = 15, search = "" } = req.query;
   const offset = (page - 1) * limit;
   const { Op } = db.Sequelize;
@@ -31,19 +32,19 @@ router.get("/", (req, res) => {
     .catch(err => res.status(500).json({ error: err.message }))
 })
 
-router.get("/:id", (req, res) => {
+router.get("/:id", isAuth, (req, res) => {
   Category.findByPk(req.params.id)
     .then(category => res.json(category))
     .catch(err => res.status(500).json({ error: err.message }))
 })
 
-router.post("/", (req, res) => {
+router.post("/", isAuth, (req, res) => {
   Category.create(req.body)
     .then(category => res.json(category))
     .catch(err => res.status(500).json({ error: err.message }))
 })
 
-router.put("/:id", (req, res) => {
+router.patch("/:id", isAuth, (req, res) => {
   Category.findByPk(req.params.id)
     .then(category => {
       category.update(req.body)
@@ -53,7 +54,7 @@ router.put("/:id", (req, res) => {
     .catch(err => res.status(500).json({ error: err.message }))
 })
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", isAuth, (req, res) => {
   Category.findByPk(req.params.id)
     .then(category => {
       category.destroy()

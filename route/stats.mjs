@@ -1,10 +1,11 @@
 import express from "express";
 const router = express.Router();
 import db from "../model/index.mjs";
+import isAuth from "../middleware/auth.mjs";
 
 const { Article, Category, File, Sequelize } = db;
 
-router.get("/", async (req, res) => {
+router.get("/", isAuth, async (req, res) => {
   try {
     const totalArticles = await Article.count();
     const totalCategories = await Category.count();

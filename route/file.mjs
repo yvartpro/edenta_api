@@ -4,6 +4,7 @@ import fs from "fs"
 import multer from "multer"
 import sharp from "sharp"
 import db from "../model/index.mjs"
+import isAuth from "../middleware/auth.mjs"
 
 const router = express.Router()
 const File = db.File
@@ -50,7 +51,7 @@ router.get("/:id", (req, res) => {
     .catch(err => res.status(500).json({ error: err.message }))
 })
 
-router.post("/", upload.single('file'), async (req, res) => {
+router.post("/", isAuth, upload.single('file'), async (req, res) => {
   try {
     if (req.file) {
       const filename = "edenta" + "_" + Math.round(Math.random() * 1E6) + ".webp";
@@ -83,7 +84,7 @@ router.post("/", upload.single('file'), async (req, res) => {
   }
 })
 
-router.put("/:id", (req, res) => {
+router.patch("/:id", isAuth, (req, res) => {
   File.findByPk(req.params.id)
     .then(file => {
       file.update(req.body)
@@ -93,7 +94,7 @@ router.put("/:id", (req, res) => {
     .catch(err => res.status(500).json({ error: err.message }))
 })
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", isAuth, (req, res) => {
   File.findByPk(req.params.id)
     .then(file => {
       file.destroy()

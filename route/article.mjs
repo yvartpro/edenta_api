@@ -1,6 +1,7 @@
 import express from "express"
 const router = express.Router()
 import db from "../model/index.mjs"
+import isAuth from "../middleware/auth.mjs"
 
 const Article = db.Article
 const File = db.File
@@ -67,13 +68,13 @@ router.get("/slug/:slug", (req, res) => {
     .catch(err => res.status(500).json({ error: err.message }))
 })
 
-router.post("/", (req, res) => {
+router.post("/", isAuth, (req, res) => {
   Article.create(req.body)
     .then(article => res.json(article))
     .catch(err => res.status(500).json({ error: err.message }))
 })
 
-router.put("/:id", (req, res) => {
+router.put("/:id", isAuth, (req, res) => {
   Article.findByPk(req.params.id, {
     include: [
       { model: File, as: 'heroImage', attributes: ["id", "url", "type", "alt"] },
@@ -89,7 +90,7 @@ router.put("/:id", (req, res) => {
     .catch(err => res.status(500).json({ error: err.message }))
 })
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", isAuth, (req, res) => {
   Article.findByPk(req.params.id)
     .then(article => {
       article.destroy()

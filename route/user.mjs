@@ -29,6 +29,14 @@ router.get("/:id", isAuth, (req, res) => {
     .catch(err => res.status(500).json({ error: err.message }))
 })
 
+router.get("/me", isAuth, (req, res) => {
+  User.findByPk(req.user.id, {
+    attributes: { exclude: ["passwordHash"] }
+  })
+    .then(user => res.json(user))
+    .catch(err => res.status(500).json({ error: err.message }))
+})
+
 router.post("/", async (req, res) => {
   try {
     const { name, email, password } = req.body
@@ -57,6 +65,19 @@ router.post("/login", async (req, res) => {
     if (!validPassword) return res.status(401).json({ error: "Invalid email or password" })
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" })
     res.json({ token })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: err.message })
+  }
+})
+
+router.get("/me", isAuth, async (req, res) => {
+  try {
+    const user = await User.findByPk(req.userData.id, {
+      attributes: { exclude: ["passwordHash"] }
+    })
+    if (!user) return res.status(404).json({ error: "User not found" })
+    res.json(user)
   } catch (err) {
     console.error(err)
     res.status(500).json({ error: err.message })
@@ -98,4 +119,5 @@ router.delete("/:id", isAuth, (req, res) => {
     })
     .catch(err => res.status(500).json({ error: err.message }))
 })
+
 export default router

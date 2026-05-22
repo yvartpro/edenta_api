@@ -4,31 +4,31 @@ import { DataTypes } from "sequelize"
 
 export default (sequelize) => {
   const extractFileIds = (data, ids = new Set()) => {
-    if (!data) return ids;
+    if (!data) return ids
     if (Array.isArray(data)) {
-      data.forEach(item => extractFileIds(item, ids));
+      data.forEach(item => extractFileIds(item, ids))
     } else if (typeof data === 'object') {
       for (const key in data) {
         if (/^(file|image)(_)?id$/i.test(key) && data[key]) {
-          ids.add(data[key]);
+          ids.add(data[key])
         }
-        extractFileIds(data[key], ids);
+        extractFileIds(data[key], ids)
       }
     }
-    return ids;
-  };
+    return ids
+  }
 
   const syncContentFiles = async (article) => {
     try {
-      const ids = extractFileIds(article.content);
-      if (article.heroImageId) ids.add(article.heroImageId);
+      const ids = extractFileIds(article.content)
+      if (article.heroImageId) ids.add(article.heroImageId)
 
       // Convert Set to Array and sync
-      await article.setContentFiles(Array.from(ids));
+      await article.setContentFiles(Array.from(ids))
     } catch (error) {
-      console.error("Error syncing article files:", error);
+      console.error("Error syncing article files:", error)
     }
-  };
+  }
 
   const Article = sequelize.define("Article",
     {
@@ -44,7 +44,8 @@ export default (sequelize) => {
       content: { type: DataTypes.JSON, allowNull: false, defaultValue: { sections: [] } },
     },
     {
-      tableName: "edenta_articles", timestamps: true, paranoid: true, validate: {
+      tableName: "edenta_articles", timestamps: true, paranoid: true,
+      validate: {
         slugUnique(next) {
           Article.findOne({ where: { slug: this.slug } }).then((article) => {
             if (article && article.id !== this.id) {
